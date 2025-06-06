@@ -6,3 +6,5 @@ edition = "2024"
 [dependencies]
 serenity = "0.12.4"
 tokio = { version = "1.45.1", features = ["full"] }
+genai = "0.3.5"
+dotenvy = "0.15.7"
