@@ -1,16 +1,39 @@
 mod config;
-mod ai;
 
-use crate::{ai::client::{AIClient, Model}, config::Config};
+use commands::init_framework;
+use config::Config;
+
+use serenity::{all::{Gateway, GatewayIntents, StandardFramework}, Client};
+use songbird::SerenityInit;
+
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let config = Config::from_env()?;
-
-    let client = AIClient::new(Model::Gemini);
+    tracing_subscriber::fmt::init();
     
-    let resp = client.ask("Why is kokolang?").await?;
-    println!("{}", resp);
+    let config = Config::from_env()?;
+//
+    //let client = AIClient::new(Model::Gemini);
+    //
+    //let resp = client.ask("Why is kokolang?").await?;
+    //println!("{}", resp);
+//
+    //Ok(())
+
+    let intents = GatewayIntents::non_privileged()
+        | GatewayIntents::MESSAGE_CONTENT;
+
+    let framework = init_framework();
+
+    let mut client = Client::builder(config.discord_token, intents)
+        .framework(framework)
+        .register_songbird()
+        .await
+        .expect("Failed to create client");
+
+    if let Err(why) = client.start().await {
+        println!("Client error: {why:?}");
+    }
 
     Ok(())
 }
