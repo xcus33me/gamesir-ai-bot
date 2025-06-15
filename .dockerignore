@@ -1,0 +1,12 @@
+target/
+.git/
+.gitignore
+README.md
+.env
+.env.example
+docker-compose.yml
+Dockerfile
+install.sh
+*.log
+.vscode/
+.idea/ 

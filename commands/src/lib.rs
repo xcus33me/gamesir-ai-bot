@@ -17,6 +17,7 @@ pub fn init_framework() -> poise::Framework<Data, Error> {
             other::join(),
             other::leave(),
             play::play(),
+            play::stop(),
             play::skip(),
             play::queue(),
         ],

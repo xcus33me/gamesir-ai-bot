@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  gamesir-ai-bot:
+    build: .
+    container_name: gamesir-ai-bot
+    restart: unless-stopped
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - AI_API_TOKEN=${AI_API_TOKEN}
+    volumes:
+      - ./.env:/home/bot/.env:ro
+    networks:
+      - bot-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  bot-network:
+    driver: bridge 

@@ -35,9 +35,10 @@ pub struct TrackErrorNotifier {
 impl VoiceEventHandler for TrackErrorNotifier {
     async fn act(&self, ctx: &EventContext<'_>) -> Option<Event> {
         if let EventContext::Track(_track_list) = ctx {
+            error!("Track error occurred");
             let _ = self    
                 .chan_id
-                .say(&self.http, "Error playing track!")
+                .say(&self.http, "❌ Error playing track!")
                 .await;
         }
         None
@@ -47,7 +48,7 @@ impl VoiceEventHandler for TrackErrorNotifier {
 #[poise::command(prefix_command, slash_command)]
 pub async fn play(
     ctx: Context<'_>,
-    #[description = "URL YouTube video"] url: String,
+    #[description = "URL YouTube video or search query"] url: String,
 ) -> Result<(), Error> {
     let guild_id = ctx.guild_id().ok_or("Command should be used in server")?;
 
@@ -58,21 +59,23 @@ pub async fn play(
     if let Some(handler_lock) = manager.get(guild_id) {
         let mut handler = handler_lock.lock().await;
 
-        // Validate URL
-        if !url.contains("youtube.com") && !url.contains("youtu.be") {
-            ctx.say("Please provide a valid YouTube URL!").await?;
-            return Ok(());
-        }
-
+        let is_url = url.contains("youtube.com") || url.contains("youtu.be") || url.contains("https://");
+        
         ctx.say("🔄 Loading track...").await?;
 
-        // Create YoutubeDl source and play
-        let src = YoutubeDl::new(reqwest::Client::new(), url.clone());
-        
-        info!("Successfully created YoutubeDl source for: {}", url);
+        let source = if is_url {
+            info!("Processing URL: {}", url);
+            YoutubeDl::new(reqwest::Client::new(), url.clone())
+        } else {
+            info!("Searching for: {}", url);
+            let query = format!("ytsearch:{}", url);
+            YoutubeDl::new(reqwest::Client::new(), query)
+        };
 
+        info!("Successfully created YoutubeDl source");
+        
         // Play the source
-        let track_handle = handler.play(src.into());
+        let track_handle = handler.play(source.into());
 
         // Add event handlers
         let _ = track_handle.add_event(
@@ -91,7 +94,11 @@ pub async fn play(
             },
         );
 
-        ctx.say(format!("✅ Added to queue: {}", url)).await?;
+        if is_url {
+            ctx.say(format!("✅ Added to queue: {}", url)).await?;
+        } else {
+            ctx.say(format!("✅ Searching and adding: {}", url)).await?;
+        }
         
         // Log track info
         info!("Track added to queue. Queue length: {}", handler.queue().len());
