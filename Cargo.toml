@@ -18,6 +18,7 @@ tracing-subscriber = "0.3.19"
 poise = "0.6.1"
 songbird = { version = "0.5.0", features = ["builtin-queue"] }
 symphonia = { version = "0.5.4", features = ["aac", "mp3", "isomp4", "ogg", "vorbis", "flac", "pcm", "wav"] }
+openssl = { version = "0.10", features = ["vendored"] }
 
 commands = {path = "commands"}
 
