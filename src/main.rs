@@ -10,15 +10,8 @@ use songbird::SerenityInit;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
-    
+
     let config = Config::from_env()?;
-//
-    //let client = AIClient::new(Model::Gemini);
-    //
-    //let resp = client.ask("Why is kokolang?").await?;
-    //println!("{}", resp);
-//
-    //Ok(())
 
     let intents = GatewayIntents::non_privileged()
         | GatewayIntents::MESSAGE_CONTENT;

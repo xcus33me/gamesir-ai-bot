@@ -334,8 +334,8 @@ dependencies = [
  "reqwest 0.12.20",
  "serenity",
  "songbird",
+ "tokio",
  "tracing",
- "youtube_dl",
 ]
 
 [[package]]
@@ -3788,15 +3788,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
 
 [[package]]
-name = "wait-timeout"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "09ac3b126d3914f9849036f826e054cbabdc8519970b8998ddaf3b5bd3c65f11"
-dependencies = [
- "libc",
-]
-
-[[package]]
 name = "walkdir"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4263,18 +4254,6 @@ dependencies = [
  "quote",
  "syn 2.0.102",
  "synstructure",
-]
-
-[[package]]
-name = "youtube_dl"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc791a982b545c7392ea685957d39bbac4a716667b46d72a1d4c384065205ab9"
-dependencies = [
- "log",
- "serde",
- "serde_json",
- "wait-timeout",
 ]
 
 [[package]]

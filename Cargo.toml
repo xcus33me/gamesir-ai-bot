@@ -24,7 +24,7 @@ commands = {path = "commands"}
 [workspace.dependencies]
 tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
-songbird = { version = "0.5.0", features = ["builtin-queue"] }
+songbird = { version = "0.5.0", default-features = false, features = ["serenity", "rustls", "builtin-queue", "gateway", "driver"] }
 symphonia = { version = "0.5.4", features = ["aac", "mp3", "isomp4", "ogg", "vorbis", "flac", "pcm", "wav"] }
 serenity = "0.12.4"
 poise = "0.6.1"
